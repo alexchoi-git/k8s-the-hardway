@@ -3,11 +3,61 @@
 ## • Use label selectors to schedule Pods.
 ## • Understand the role of DaemonSets.
 ```
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: elasticsearch
+  namespace: kube-system
+  labels:
+    k8s-app: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      name: elasticsearch
+  template:
+    metadata:
+      labels:
+        name: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: k8s.gcr.io/fluentd-elasticsearch:1.20
 ```
 ## • Understand how resource limits can affect Pod scheduling.
+### Default CPU and memory request 
+https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/
+```
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-limit-range
+spec:
+  limits:
+  - default:
+      cpu: 1
+    defaultRequest:
+      cpu: 0.5
+    type: Container
+```
 
-https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
+```
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+spec:
+  limits:
+  - default:
+      memory: 512Mi
+    defaultRequest:
+      memory: 256Mi
+    type: Container
+```
+
+
 ## • Understand how to run multiple schedulers and how to configure Pods to use them.
+https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
 ```
 ---
 apiVersion: apps/v1
