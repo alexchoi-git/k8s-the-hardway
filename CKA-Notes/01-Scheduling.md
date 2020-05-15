@@ -1,6 +1,30 @@
 # 5% - Scheduling
 
 ## • Use label selectors to schedule Pods.
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
 ## • Understand the role of DaemonSets.
 ```
 apiVersion: apps/v1
@@ -24,6 +48,7 @@ spec:
         image: k8s.gcr.io/fluentd-elasticsearch:1.20
 ```
 ## • Understand how resource limits can affect Pod scheduling.
+Test: https://kodekloud.com/courses/certified-kubernetes-administrator-with-practice-tests-labs/lectures/12038835
 ### Default CPU and memory request 
 https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/
 ```
